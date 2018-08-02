@@ -9,24 +9,36 @@ var message = document.getElementById('message'),
     feedback = document.getElementById('feedback');
 
 //Emit events
-
-btn.addEventListener('click', function(){
-    socket.emit('chat',{
-        message: message.value,
-        handle: handle.value
-    });
-});
-
-message.addEventListener('keypress',function(){
-    socket.emit('typing',handle.value);
-});
+btn.addEventListener('click', sendButton);
+message.addEventListener('keypress',typing);
 
 //Listen for events
-socket.on('chat', function(data){
+socket.on('chat', getMessage);
+socket.on('typing', getUserTyping);
+
+//functions
+
+//receiving data
+function getMessage(data){
     output.innerHTML+= '<p><strong>' + data.handle + ':</strong>' + data.message + '</p>';
     feedback.innerHTML = '';
-});
+}
 
-socket.on('typing', function(data){
+function getUserTyping(data){
     feedback.innerHTML = '<p><em>' + data + ' is typing a message...</em></p>';
-});
+}
+
+//sending data
+function sendButton(){
+
+    messageData = {
+        message: message.value,
+        handle: handle.value
+    };
+
+    socket.emit('chat',messageData);
+}
+
+function typing(){
+    socket.emit('typing',handle.value);
+}

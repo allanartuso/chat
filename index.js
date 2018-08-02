@@ -1,9 +1,9 @@
-var express = require('express');
-var socket = require('socket.io');
+const express = require('express');
+const socket = require('socket.io');
 
 //App setup
-var app = express();
-var server = app.listen(3000, function(){
+const app = express();
+const server = app.listen(3000, function(){
     console.log('listening to requests on port 3000');
 });
 
@@ -12,18 +12,22 @@ app.use(express.static('public'));
 
 //Socket setup
 var io = socket(server);
+io.on('connection', connectionIO);
 
-io.on('connection', function(socket){
+function connectionIO (socket){
     console.log('socket connection made' + socket.id);
 
     //Listener
-    socket.on('chat', function(data){
+    socket.on('chat', sendMessage);
+    socket.on('typing', sendUserTyping);
+
+    function sendMessage (data){
         //can save message to db or json file
         io.sockets.emit('chat',data);
-    });
+    }
 
-    socket.on('typing', function(data){
+    function sendUserTyping (data){
         socket.broadcast.emit('typing',data);
-    });
+    }
 
-});
+}
