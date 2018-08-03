@@ -16,7 +16,7 @@ var io = socket(server);
 io.on('connection', connectionIO);
 
 function connectionIO (socket){
-    console.log('socket connection made' + socket.id);
+    console.log('socket connection made ' + socket.id);
 
     //Listener
     socket.on('chat', sendMessage);
