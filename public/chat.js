@@ -1,4 +1,4 @@
-//Make connection
+//Connection
 var socket = io.connect('http://localhost:3000');
 
 //Query DOM
@@ -15,10 +15,9 @@ message.addEventListener('keypress',typing);
 socket.on('typing', getUserTyping);
 socket.on('chat', waitMessage);
 
+//Functions
 
-//functions
-
-//async
+//async to receive data
 async function waitMessage(data){
     var waiting = await wait();
     console.log(waiting);
@@ -38,7 +37,6 @@ function wait(){
             resolve(true);
         }, 2000);
     });
-    
 }
 
 function getUserTyping(data){

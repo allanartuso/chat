@@ -1,5 +1,6 @@
 const express = require('express');
 const socket = require('socket.io');
+const myModule = require('./requireMe');
 
 //App setup
 const app = express();
@@ -31,3 +32,7 @@ function connectionIO (socket){
     }
 
 }
+
+//using modules
+myModule.say('I am a function inside a module');
+myModule.calc();
