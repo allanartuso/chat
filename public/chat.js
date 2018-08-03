@@ -12,21 +12,39 @@ var message = document.getElementById('message'),
 btn.addEventListener('click', sendButton);
 message.addEventListener('keypress',typing);
 
-//Listen for events
-socket.on('chat', getMessage);
 socket.on('typing', getUserTyping);
+socket.on('chat', waitMessage);
+
 
 //functions
+
+//async
+async function waitMessage(data){
+    var waiting = await wait();
+    console.log(waiting);
+    getMessage(data);
+};
 
 //receiving data
 function getMessage(data){
     output.innerHTML+= '<p><strong>' + data.handle + ':</strong>' + data.message + '</p>';
     feedback.innerHTML = '';
+};
+
+function wait(){
+    feedback.innerHTML = '<p><em>Message sent, wait a second</em></p>';
+    return new Promise(resolve => {
+        setTimeout( () => {
+            resolve(true);
+        }, 2000);
+    });
+    
 }
 
 function getUserTyping(data){
     feedback.innerHTML = '<p><em>' + data + ' is typing a message...</em></p>';
-}
+    return true;
+};
 
 //sending data
 function sendButton(){
@@ -37,8 +55,8 @@ function sendButton(){
     };
 
     socket.emit('chat',messageData);
-}
+};
 
 function typing(){
     socket.emit('typing',handle.value);
-}
+};
