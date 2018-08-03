@@ -19,9 +19,11 @@ socket.on('chat', waitMessage);
 
 //async to receive data
 async function waitMessage(data){
+
     var waiting = await wait();
     console.log(waiting);
     getMessage(data);
+    
 };
 
 //receiving data
@@ -37,11 +39,13 @@ function wait(){
             resolve(true);
         }, 2000);
     });
-}
+};
 
 function getUserTyping(data){
+
     feedback.innerHTML = '<p><em>' + data + ' is typing a message...</em></p>';
     return true;
+
 };
 
 //sending data
@@ -56,5 +60,7 @@ function sendButton(){
 };
 
 function typing(){
+
     socket.emit('typing',handle.value);
+
 };
